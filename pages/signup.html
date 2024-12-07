@@ -1,0 +1,111 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'"
+          href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800" />
+    <title>AmbilCepat - Daftar</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu(event) {
+            const menu = document.getElementById('mobile-menu');
+            if (event.target === menu || event.target.closest('#mobile-menu-button')) {
+                return;
+            }
+            menu.classList.add('hidden');
+        }
+
+        document.addEventListener('click', closeMobileMenu);
+    </script>
+</head>
+<body>
+<div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+     style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+    <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+            <div class="flex items-center gap-4 text-[#0d141c]">
+                <div class="size-4">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z"
+                              fill="currentColor"></path>
+                    </svg>
+                </div>
+                <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">AmbilCepat</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-8">
+                <div class="hidden md:flex items-center gap-9">
+                    <a class="text-[#0d141c] text-sm font-medium leading-normal" href="home.html">Beranda</a>
+                    <a class="text-[#0d141c] text-sm font-medium leading-normal" href="services.html">Layanan</a>
+                    <a class="text-[#0d141c] text-sm font-medium leading-normal" href="testimonials.html">Testimoni</a>
+                    <a class="text-[#0d141c] text-sm font-medium leading-normal" href="about.html">Tentang Kami</a>
+                    <a class="text-[#0d141c] text-sm font-medium leading-normal" href="contact.html">Kontak</a>
+                </div>
+                <div class="hidden md:flex gap-2">
+                    <a href="loggedin.html"
+                       class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#0d7cf2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Daftar</span>
+                    </a>
+                    <a href="loggedin.html"
+                       class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Masuk</span>
+                    </a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden bg-blue-500 text-white p-2 rounded"
+                        onclick="toggleMobileMenu()">Menu
+                </button>
+            </div>
+        </header>
+
+        <!-- Menu Responsif -->
+        <div id="mobile-menu" class="mobile-menu hidden fixed top-0 left-0 w-full h-full bg-white z-10 p-4">
+            <div class="flex flex-col">
+                <a class="text-[#0d141c] text-sm font-medium leading-normal mb-2" href="home.html">Beranda</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal mb-2" href="services.html">Layanan</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal mb-2" href="testimonials.html">Testimoni</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal mb-2" href="about.html">Tentang Kami</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal mb-2" href="contact.html">Hubungi Kami</a>
+                <a href="signup.html"
+                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 mt-4 bg-[#0d7cf2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span class="truncate">Daftar</span>
+                </a>
+                <a href="login.html"
+                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 mt-2 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span class="truncate">Masuk</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex flex-1 justify-center items-center">
+            <div class="max-w-[400px] w-full bg-white rounded-lg p-10">
+                <h1 class="text-[#0d141c] text-2xl font-bold leading-tight tracking-[-0.015em]">Daftar</h1>
+                <form class="flex flex-col gap-4 mt-10">
+                    <input type="text"
+                           class="w-full bg-white border border-solid border-[#e7edf4] rounded-lg px-4 py-3 text-[#0d141c] text-sm font-medium leading-normal"
+                           placeholder="Nama"/>
+                    <input type="email"
+                           class="w-full bg-white border border-solid border-[#e7edf4] rounded-lg px-4 py-3 text-[#0d141c] text-sm font-medium leading-normal"
+                           placeholder="Email"/>
+                    <input type="password"
+                           class="w-full bg-white border border-solid border-[#e7edf4] rounded-lg px-4 py-3 text-[#0d141c] text-sm font-medium leading-normal"
+                           placeholder="Kata Sandi"/>
+                    <button
+                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#0d7cf2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+                        onclick="window.location.href='loggedin.html'; return false;">
+                        <span class="truncate">Daftar</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <footer class="absolute bottom-0 w-full text-center py-4 bg-slate-100 text-[#0d141c]">
+            © 2024 AmbilCepat. All rights reserved.
+        </footer>
+    </div>
+</div>
+</body>
+</html>

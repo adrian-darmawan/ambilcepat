@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+    />
+    <title>AmbilCepat - Login</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      function redirectToHome() {
+        window.location.href = "login.html";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+          <div class="flex items-center gap-4 text-[#0d141c]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]">AmbilCepat</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <div class="flex items-center gap-9">
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="home.html">Beranda</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="services.html">Layanan</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="testimonials.html">Testimoni</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="about.html">Tentang Kami</a>
+              <a class="text-[#0d141c] text-sm font-medium leading-normal" href="contact.html">Kontak</a>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#0d7cf2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Sign Up</span>
+              </button>
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]"
+                onclick="redirectToHome()"
+              >
+                <span class="truncate">Log In</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="flex flex-1 justify-center items-center">
+          <div class="max-w-[400px] w-full bg-white rounded-lg p-5 form-container">
+            <h1 class="text-[#0d141c] text-2xl font-bold leading-tight tracking-[-0.015em]">Masuk</h1>
+            <form class="flex flex-col gap-4 mt-5">
+              <input
+                type="email"
+                class="w-full bg-white border border-solid border-[#e7edf4] rounded-lg px-4 py-2 form-input"
+                placeholder="Email"
+              />
+              <input
+                type="password"
+                class="w-full bg-white border border-solid border-[#e7edf4] rounded-lg px-4 py-2 form-input"
+                placeholder="Kata Sandi"
+              />
+              <button
+                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#0d7cf2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
+                        onclick="window.location.href='loggedin.html'; return false;">
+                        <span class="truncate">Masuk</span>
+                    </button>
+            </form>
+            <p class="text-[#6d6d6d] text-sm text-center mt-4">
+              Belum punya akun? <a class="text-[#0d7cf2]" href="signup.html">Daftar di sini</a>
+            </p>
+          </div>
+        </div>
+
+        <footer class="flex justify-center items-center py-4 border-t border-solid border-b-[#e7edf4] absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full">
+          <p class="text-[#0d141c] text-sm font-medium leading-normal">© 2024 AmbilCepat. All rights reserved.</p>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
