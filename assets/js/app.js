@@ -1,15 +1,13 @@
 /**
- * App.js
- *
- * The main entry point and orchestrator for the AmbilCepat application.
- * It handles initialization, routing, and state management.
+ * AmbilCepat v3 - App.js
  */
 
 const App = {
-  // --- APPLICATION STATE ---
+  // --- STATE ---
   state: {
     currentPage: 'splash',
-    history: ['splash'],
+    activeTab: 'beranda',
+    history: ['beranda'],
     phoneNumber: null,
     currentOTP: null,
     activeServiceId: null,
@@ -19,7 +17,10 @@ const App = {
   // --- INITIALIZATION ---
   init: () => {
     console.log("AmbilCepat App Initialized");
-    App.router.render();
+    // On initial load, determine the starting page
+    // For now, we start with the auth flow. In a real app, you might check for a login token.
+    App.router.navigate('splash');
+
     setTimeout(() => {
       if (App.state.currentPage === 'splash') {
         App.router.navigate('welcome');
@@ -27,14 +28,14 @@ const App = {
     }, 2500);
   },
 
-  // --- MODAL LOGIC ---
+  // --- MODAL & LOGIC ---
   openModal: () => {
       App.state.isModalOpen = true;
-      App.router.render(App.state.activeServiceId);
+      App.router.render();
   },
   closeModal: () => {
       App.state.isModalOpen = false;
-      App.router.render(App.state.activeServiceId);
+      App.router.render();
   },
   confirmPickup: () => {
       ServiceData.updateServiceStatus(App.state.activeServiceId, 'Telah Diambil');
@@ -47,89 +48,127 @@ const App = {
     welcome: () => Components.WelcomeScreen(),
     'phone-input': () => Components.PhoneInputScreen(),
     otp: () => Components.OTPScreen(App.state.phoneNumber),
-    dashboard: () => {
-        const services = ServiceData.getAllServices();
+
+    beranda: () => {
+        const serviceTypes = ServiceData.getAllServiceTypes();
         return `
-            <div class="min-h-screen bg-gray-50">
-                ${Components.Header('Beranda')}
+            <div class="min-h-screen bg-light">
+                ${Components.Header('AmbilCepat')}
                 <main class="p-4 space-y-4 pb-20">
-                    <div class="relative">
-                        <input id="search-input" type="text" placeholder="Cari layanan atau ID servis..." class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-shadow shadow-sm">
-                        <svg class="absolute left-3 top-3.5 h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-3">Layanan Aktif</h2>
-                        <div id="service-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            ${services.map(service => Components.ServiceCard(service)).join('')}
-                        </div>
+                    <h2 class="text-lg font-semibold text-dark">Pilih Jenis Layanan</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        ${serviceTypes.map(st => Components.ServiceCatalogCard(st)).join('')}
                     </div>
                 </main>
-                <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 text-center text-sm text-gray-500">
-                    Bottom Navigation Placeholder
-                </footer>
+                ${Components.BottomNav(App.state.activeTab)}
             </div>
         `;
     },
+
+    status: () => {
+        const services = ServiceData.getAllServices();
+        return `
+            <div class="min-h-screen bg-light">
+                ${Components.Header('Status Layanan')}
+                <main class="p-4 space-y-4 pb-20">
+                    <div class="relative">
+                        <input id="search-input" type="text" placeholder="Cari nama atau ID servis..." class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500">
+                        <svg class="absolute left-3 top-3.5 h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <div id="service-grid" class="space-y-3">
+                        ${services.map(service => Components.ActiveServiceCard(service)).join('')}
+                    </div>
+                </main>
+                ${Components.BottomNav(App.state.activeTab)}
+            </div>
+        `;
+    },
+
+    jadwal: () => {
+        return `
+             <div class="min-h-screen bg-light">
+                ${Components.Header('Jadwal')}
+                <main class="p-4 pb-20">
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                        <p class="font-semibold text-dark">Kalender Interaktif</p>
+                        <p class="text-sm text-gray-custom mt-2">(Komponen kalender akan diimplementasikan di sini)</p>
+                    </div>
+                </main>
+                ${Components.BottomNav(App.state.activeTab)}
+            </div>
+        `;
+    },
+
+    pengaturan: () => {
+         return `
+             <div class="min-h-screen bg-light">
+                ${Components.Header('Pengaturan')}
+                <main class="p-4 pb-20 text-center">
+                     <p class="text-dark">Halaman Pengaturan</p>
+                </main>
+                ${Components.BottomNav(App.state.activeTab)}
+            </div>
+        `;
+    },
+
     detail: (serviceId) => {
         const service = ServiceData.getServiceById(serviceId);
         if (!service) {
-            return `<div class="p-8 text-center">Layanan tidak ditemukan. <a href="#" onclick="App.router.navigate('dashboard')">Kembali ke dasbor</a>.</div>`;
+            return `<div class="p-8 text-center">Layanan tidak ditemukan. <a href="#" onclick="App.router.navigate('status')">Kembali ke daftar</a>.</div>`;
         }
         const totalCost = service.serviceCost + service.pickupFee;
         return `
             <div id="detail-view-container" class="${App.state.isModalOpen ? 'filter blur-sm' : ''}">
-                <div class="min-h-screen bg-gray-50">
+                <div class="min-h-screen bg-light">
                     ${Components.Header('Detail Service', true)}
                     <main class="lg:grid lg:grid-cols-3 lg:gap-8 lg:p-8 pb-24">
                         <div class="lg:col-span-2 space-y-4">
                             <div class="bg-white p-6 text-center shadow-sm lg:rounded-xl">
-                                <h1 class="text-2xl font-bold text-gray-900 mb-2">${service.status}</h1>
-                                <div class="flex items-center justify-center space-x-3">
-                                    <img src="https://i.pravatar.cc/150?u=${service.technician}" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow">
+                                <h1 class="text-2xl font-semibold text-dark mb-2">${service.status}</h1>
+                                <div class="flex items-center justify-center space-x-4">
+                                    <img src="${service.technicianImg}" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow">
                                     <div class="text-left">
-                                        <p class="font-medium text-gray-900">${service.technician}</p>
-                                        <p class="text-sm text-gray-500">Teknisi</p>
+                                        <p class="font-semibold text-dark">${service.technician}</p>
+                                        <p class="text-sm text-gray-custom">Teknisi</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="p-4 lg:p-0">
-                                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-                                    <h3 class="font-medium text-gray-900 mb-4">Progress Timeline</h3>
+                                <div class="bg-white rounded-xl p-4 shadow-sm">
+                                    <h3 class="font-semibold text-dark mb-4">Progress Timeline</h3>
                                     ${Components.TimelineComponent(service.timeline)}
                                 </div>
                             </div>
                         </div>
                         <div class="lg:col-span-1 p-4 lg:p-0 space-y-4">
-                            <div class="bg-white rounded-xl p-4 space-y-4 shadow-sm border border-gray-100">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                    </div>
+                            <div class="bg-white rounded-xl p-4 space-y-4 shadow-sm">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-lg flex items-center justify-center bg-dark"><svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
                                     <div>
-                                        <h3 class="font-medium text-gray-900">${service.itemName}</h3>
-                                        <p class="text-sm text-gray-500">ID: ${service.id}</p>
+                                        <h3 class="font-semibold text-dark">${service.itemName}</h3>
+                                        <p class="text-sm text-gray-custom">ID: ${service.id}</p>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4 text-sm pt-4 border-t">
-                                    <div><p class="text-gray-500">Tanggal Masuk</p><p class="font-medium">${service.dateReceived}</p></div>
-                                    <div><p class="text-gray-500">Estimasi Selesai</p><p class="font-medium">${service.estimatedFinish}</p></div>
-                                    <div><p class="text-gray-500">Nomer Antri</p><p class="font-medium font-mono">${service.queueNumber}</p></div>
-                                    <div><p class="text-gray-500">Biaya Servis</p><p class="font-medium">Rp${service.serviceCost.toLocaleString('id-ID')}</p></div>
+                                    <div><p class="text-gray-custom">Tanggal Masuk</p><p class="font-semibold text-dark">${service.dateReceived}</p></div>
+                                    <div><p class="text-gray-custom">Estimasi Selesai</p><p class="font-semibold text-dark">${service.estimatedFinish}</p></div>
+                                    <div><p class="text-gray-custom">Nomer Antri</p><p class="font-semibold text-dark font-mono">${service.queueNumber}</p></div>
+                                    <div><p class="text-gray-custom">Biaya Servis</p><p class="font-semibold text-dark">Rp${service.serviceCost.toLocaleString('id-ID')}</p></div>
                                 </div>
                                 <div class="border-t pt-4 text-right">
-                                    <p class="text-gray-500 text-sm">Total Bayar</p>
-                                    <p class="text-xl font-bold text-gray-900">Rp${totalCost.toLocaleString('id-ID')}</p>
+                                    <p class="text-sm text-gray-custom">Total Bayar</p>
+                                    <p class="text-xl font-semibold text-dark">Rp${totalCost.toLocaleString('id-ID')}</p>
                                 </div>
                             </div>
                              <div class="hidden lg:block">
-                                <button id="pickup-button" class="w-full bg-cyan-500 text-white py-3 rounded-xl font-medium hover:bg-cyan-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" ${service.status !== 'Selesai' ? 'disabled' : ''}>
+                                <button id="pickup-button" class="w-full text-white py-3 rounded-xl font-semibold" style="background-color: var(--primary-blue); ${service.status !== 'Selesai' ? 'opacity: 0.5; cursor: not-allowed;' : ''}" ${service.status !== 'Selesai' ? 'disabled' : ''}>
                                     ${service.status === 'Selesai' ? 'Ambil Sekarang' : (service.status === 'Telah Diambil' ? 'Telah Diambil' : 'Belum Selesai')}
                                 </button>
                             </div>
                         </div>
                     </main>
                     <div class="fixed bottom-0 left-0 right-0 bg-white p-4 border-t lg:hidden">
-                        <button id="pickup-button-mobile" class="w-full bg-cyan-500 text-white py-3 rounded-xl font-medium hover:bg-cyan-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" ${service.status !== 'Selesai' ? 'disabled' : ''}>
+                        <button id="pickup-button-mobile" class="w-full text-white py-3 rounded-xl font-semibold" style="background-color: var(--primary-blue); ${service.status !== 'Selesai' ? 'opacity: 0.5;' : ''}" ${service.status !== 'Selesai' ? 'disabled' : ''}>
                             ${service.status === 'Selesai' ? 'Ambil Sekarang' : (service.status === 'Telah Diambil' ? 'Telah Diambil' : 'Belum Selesai')}
                         </button>
                     </div>
@@ -140,9 +179,12 @@ const App = {
     },
   },
 
-  // --- ROUTER & EVENT LISTENERS ---
   router: {
     navigate: (view, data = null) => {
+      const mainTabs = ['beranda', 'status', 'jadwal', 'pengaturan'];
+      if(mainTabs.includes(view)) {
+          App.state.activeTab = view;
+      }
       App.state.currentPage = view;
       if (view === 'detail') {
           App.state.activeServiceId = data;
@@ -215,7 +257,7 @@ const App = {
                 }
             });
         });
-    } else if (page === 'dashboard') {
+    } else if (page === 'status') {
         const searchInput = document.getElementById('search-input');
         searchInput.addEventListener('keyup', () => {
             const query = searchInput.value;
@@ -223,9 +265,9 @@ const App = {
             const gridContainer = document.getElementById('service-grid');
             if (gridContainer) {
                 if (filteredServices.length > 0) {
-                    gridContainer.innerHTML = filteredServices.map(service => Components.ServiceCard(service)).join('');
+                    gridContainer.innerHTML = filteredServices.map(service => Components.ActiveServiceCard(service)).join('');
                 } else {
-                    gridContainer.innerHTML = `<p class="text-center text-gray-500 py-8">Tidak ada layanan yang cocok dengan pencarian Anda.</p>`;
+                    gridContainer.innerHTML = `<p class="text-center text-gray-custom py-8">Tidak ada layanan yang cocok dengan pencarian Anda.</p>`;
                 }
             }
         });
@@ -241,28 +283,12 @@ const App = {
     }
   },
 
-  // --- APPLICATION LOGIC ---
-  TrackingSystem: {
-    searchService: (query) => {
-      if (!query) {
-        return ServiceData.getAllServices();
-      }
-      const lowerCaseQuery = query.toLowerCase();
-      return ServiceData.getAllServices().filter(service =>
-        service.itemName.toLowerCase().includes(lowerCaseQuery) ||
-        service.id.toLowerCase().includes(lowerCaseQuery) ||
-        service.customerName.toLowerCase().includes(lowerCaseQuery)
-      );
-    },
-  },
-
   AuthFlow: {
     validatePhone: (phone) => {
       const phoneRegex = /^(\+62|62|0)?[0-9]{9,13}$/;
       return phoneRegex.test(phone);
     },
     sendOTP: (phone) => {
-      console.log(`Simulating OTP sending to ${phone}...`);
       return new Promise(resolve => {
         setTimeout(() => {
           const otp = Math.floor(1000 + Math.random() * 9000).toString();
@@ -276,13 +302,25 @@ const App = {
     verifyOTP: (inputOTP) => {
       const success = inputOTP === App.state.currentOTP;
       if (success) {
-          console.log("OTP Verified! Navigating to dashboard.");
-          App.router.navigate('dashboard');
+          App.router.navigate('beranda');
       }
       return success;
     },
   },
+
+  TrackingSystem: {
+    searchService: (query) => {
+      if (!query) {
+        return ServiceData.getAllServices();
+      }
+      const lowerCaseQuery = query.toLowerCase();
+      return ServiceData.getAllServices().filter(service =>
+        service.itemName.toLowerCase().includes(lowerCaseQuery) ||
+        service.id.toLowerCase().includes(lowerCaseQuery) ||
+        service.customerName.toLowerCase().includes(lowerCaseQuery)
+      );
+    },
+  },
 };
 
-// --- APPLICATION START ---
 document.addEventListener('DOMContentLoaded', App.init);

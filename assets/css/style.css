@@ -1,28 +1,23 @@
-/* Custom styles for AmbilCepat */
-/* Tailwind CSS will handle most of the styling. */
+/* AmbilCepat v3 - Custom Styles & Design System Variables */
 
-/* Loading animations */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+@layer base {
+  :root {
+    --primary-blue: #22D3EE;
+    --primary-blue-dark: #0891B2;
+    --text-dark: #1F2937;
+    --text-gray: #6B7280;
+    --bg-light: #F9FAFB;
+    --success-green: #10B981;
+    --warning-orange: #F59E0B;
+    --error-red: #EF4444;
+    --white: #FFFFFF;
+  }
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Add a class for the modal animation */
-.modal-content-animate {
-    animation: slideUp 0.3s ease-out;
-}
-
-/* Micro-interactions for buttons */
-button:active, .button:active {
-    transform: scale(0.98);
-    transition: transform 0.1s;
-}
+/* Extending Tailwind with the custom colors */
+/* This requires a proper Tailwind setup, but for CDN this is a way to organize */
+.bg-primary { background-color: var(--primary-blue); }
+.text-primary { color: var(--primary-blue); }
+.text-dark { color: var(--text-dark); }
+.text-gray-custom { color: var(--text-gray); }
+.bg-light { background-color: var(--bg-light); }
