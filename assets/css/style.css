@@ -1,0 +1,28 @@
+/* Custom styles for AmbilCepat */
+/* Tailwind CSS will handle most of the styling. */
+
+/* Loading animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Add a class for the modal animation */
+.modal-content-animate {
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Micro-interactions for buttons */
+button:active, .button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
